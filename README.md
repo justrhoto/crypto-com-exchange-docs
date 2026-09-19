@@ -30,8 +30,9 @@ update.ts                                     the sync script
 Local paths mirror upstream URLs exactly: drop
 `https://exchange-developer.crypto.com/exchange/v1/` from any documentation URL, add `.md`, and
 you have the path in this repository. Nothing here is reorganised or hand-curated, so nothing
-here needs a human to decide where a new page belongs. See
-[ADR 0001](adr/0001-mirror-upstream-url-paths.md).
+here needs a human to decide where a new page belongs — an upstream restructure sorts itself out
+unattended, which matters for a job that runs nightly with nobody watching. Browsing structure
+lives in the generated `INDEX.md` instead, where it is disposable.
 
 ## Use with an AI agent
 
