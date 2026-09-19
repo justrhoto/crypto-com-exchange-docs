@@ -1,0 +1,398 @@
+# private/staking/get-convert-history
+
+URL: https://exchange-developer.crypto.com/exchange/v1/docs/api/rest/private-staking-get-convert-history
+
+- **Method:** `POST`
+- **Path:** `/private/staking/get-convert-history`
+- **Tags:** Staking
+
+Get convert request history
+
+## Request Body
+
+### Parameters
+
+- `end_time` (string (int64)) - End time in Unix format (inclusive), ms or ns. Default: current system timestamp.
+- `limit` (string (int32)) - Max number of requests returned. Default: 20. Max: 500.
+- `start_time` (string (int64)) - Start time in Unix format (inclusive), ms or ns. Default: end_time - 30 days. Min: end_time - 180 days.
+
+### Example
+
+```json
+{
+  "id": "1",
+  "method": "private/staking/get-convert-history",
+  "api_key": "YOUR_API_KEY",
+  "sig": "DIGITAL_SIGNATURE",
+  "nonce": "1739923200000",
+  "params": {
+    "start_time": "1691455454495",
+    "end_time": "1691545277000",
+    "limit": "10"
+  }
+}
+```
+
+## Responses
+
+### 200 Success.
+
+#### Result
+
+- `data` (array of object) - List of convert history entries.
+  Array of objects:
+  - `actual_rate` (string (decimal)) - Actual conversion rate
+  - `convert_id` (string) - Convert request id
+  - `create_timestamp_ms` (string (int64)) - Request creation timestamp in milliseconds in Unix time format.
+  - `expected_rate` (string (decimal)) - Expected conversion rate
+  - `from_instrument_name` (string) - Instrument name to convert from, e.g. ETH.staked or CDCETH
+  - `from_quantity` (string (decimal)) - Quantity to be converted in from_instrument_name
+  - `slippage_tolerance_bps` (string (int32)) - Maximum slippage allowed in basis point
+  - `status` (enum: NEW | COMPLETED | REJECTED) - Status of a convert request (used wherever convert_id is present).
+  - `to_instrument_name` (string) - Instrument name to convert to, e.g. CDCETH or ETH.staked
+  - `to_quantity` (string (decimal)) - Quantity converted to to_instrument_name
+
+#### Example
+
+```json
+{
+  "id": "1",
+  "method": "private/staking/get-convert-history",
+  "code": "0",
+  "result": {
+    "data": [
+      {
+        "from_instrument_name": "ETH.staked",
+        "to_instrument_name": "CDCETH",
+        "expected_rate": "1.0203",
+        "from_quantity": "3.14159265",
+        "slippage_tolerance_bps": "3",
+        "actual_rate": "1.0203",
+        "to_quantity": "3.14159265",
+        "convert_id": "1",
+        "status": "COMPLETED",
+        "create_timestamp_ms": "1688140984005"
+      }
+    ]
+  }
+}
+```
+
+### 400 Bad request.
+
+#### Example
+
+```json
+{
+  "id": "1",
+  "method": "private/staking/get-convert-history",
+  "code": "40001",
+  "message": "BAD_REQUEST"
+}
+```
+
+### 401 Unauthorized.
+
+#### Example
+
+```json
+{
+  "id": "1",
+  "method": "private/staking/get-convert-history",
+  "code": "40101",
+  "message": "UNAUTHORIZED"
+}
+```
+
+### 408 Request timeout.
+
+#### Example
+
+```json
+{
+  "id": "1",
+  "method": "private/staking/get-convert-history",
+  "code": "40801",
+  "message": "REQUEST_TIMEOUT"
+}
+```
+
+### 429 Too many requests.
+
+#### Example
+
+```json
+{
+  "id": "1",
+  "method": "private/staking/get-convert-history",
+  "code": "42901",
+  "message": "TOO_MANY_REQUESTS"
+}
+```
+
+### 500 Internal server error.
+
+#### Example
+
+```json
+{
+  "id": "1",
+  "method": "private/staking/get-convert-history",
+  "code": "50001",
+  "message": "INTERNAL_SERVER_ERROR"
+}
+```
+
+## OpenAPI Definition
+
+Self-contained OpenAPI specification for this operation:
+
+```yaml
+openapi: 3.0.3
+info:
+  title: private/staking/get-convert-history
+  version: 1.0.0
+servers:
+  - url: https://api.crypto.com/exchange/v1
+    description: Production
+  - url: https://uat-api.3ona.co/exchange/v1
+    description: UAT Sandbox
+paths:
+  /private/staking/get-convert-history:
+    post:
+      tags:
+        - Staking
+      x-apply-to:
+        - rest
+      summary: private/staking/get-convert-history
+      description: Get convert request history
+      operationId: privateStakingGetConvertHistory
+      x-codeSamples: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PrivateStakingGetConvertHistoryRequest"
+            example:
+              id: "1"
+              method: private/staking/get-convert-history
+              api_key: YOUR_API_KEY
+              sig: DIGITAL_SIGNATURE
+              nonce: "1739923200000"
+              params:
+                start_time: "1691455454495"
+                end_time: "1691545277000"
+                limit: "10"
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateStakingGetConvertHistoryResponse"
+              example:
+                id: "1"
+                method: private/staking/get-convert-history
+                code: "0"
+                result:
+                  data:
+                    - from_instrument_name: ETH.staked
+                      to_instrument_name: CDCETH
+                      expected_rate: "1.0203"
+                      from_quantity: "3.14159265"
+                      slippage_tolerance_bps: "3"
+                      actual_rate: "1.0203"
+                      to_quantity: "3.14159265"
+                      convert_id: "1"
+                      status: COMPLETED
+                      create_timestamp_ms: "1688140984005"
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateStakingGetConvertHistoryResponse"
+              example:
+                id: "1"
+                method: private/staking/get-convert-history
+                code: "40001"
+                message: BAD_REQUEST
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateStakingGetConvertHistoryResponse"
+              example:
+                id: "1"
+                method: private/staking/get-convert-history
+                code: "40101"
+                message: UNAUTHORIZED
+        "408":
+          description: Request timeout.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateStakingGetConvertHistoryResponse"
+              example:
+                id: "1"
+                method: private/staking/get-convert-history
+                code: "40801"
+                message: REQUEST_TIMEOUT
+        "429":
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateStakingGetConvertHistoryResponse"
+              example:
+                id: "1"
+                method: private/staking/get-convert-history
+                code: "42901"
+                message: TOO_MANY_REQUESTS
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateStakingGetConvertHistoryResponse"
+              example:
+                id: "1"
+                method: private/staking/get-convert-history
+                code: "50001"
+                message: INTERNAL_SERVER_ERROR
+components:
+  schemas:
+    PrivateStakingGetConvertHistoryRequest:
+      type: object
+      x-archetype: Request
+      required:
+        - id
+        - method
+        - api_key
+        - sig
+        - nonce
+        - params
+      description: Request body for private/staking/get-convert-history.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Request id (echoed in response)
+        method:
+          type: string
+          description: Must be "private/staking/get-convert-history"
+          example: private/staking/get-convert-history
+        api_key:
+          type: string
+          description: Your API key (only required for private REST)
+        sig:
+          type: string
+          description: HMAC-SHA256 signature in hex (only required for private REST)
+        nonce:
+          type: string
+          format: int64
+          description: Current timestamp in milliseconds, e.g. "1771761038000".
+        params:
+          type: object
+          properties:
+            start_time:
+              type: string
+              format: int64
+              description: "Start time in Unix format (inclusive), ms or ns. Default: end_time - 30 days. Min: end_time - 180 days."
+            end_time:
+              type: string
+              format: int64
+              description: "End time in Unix format (inclusive), ms or ns. Default: current system timestamp."
+            limit:
+              type: string
+              format: int32
+              description: "Max number of requests returned. Default: 20. Max: 500."
+    PrivateStakingGetConvertHistoryResponse:
+      type: object
+      description: |
+        Response for private/staking/get-convert-history (HTTP 200/4xx/5xx).
+        code === 0 → success, result present.
+        code !== 0 → error, message and/or original present.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Echoed request id
+        method:
+          type: string
+          description: Method invoked
+        code:
+          type: string
+          format: int32
+          description: 0 = success; non-zero indicates error (reason code).
+        result:
+          type: object
+          description: Present when code === 0. data array of convert history entries.
+          properties:
+            data:
+              type: array
+              description: List of convert history entries.
+              items:
+                $ref: "#/components/schemas/StakingConvertHistoryItem"
+        message:
+          type: string
+          description: Response message. Contains additional reason when code !== 0.
+        original:
+          type: string
+          description: Present when code !== 0.
+    StakingConvertHistoryItem:
+      type: object
+      description: One convert history entry in private/staking/get-convert-history result.data.
+      properties:
+        from_instrument_name:
+          type: string
+          description: Instrument name to convert from, e.g. ETH.staked or CDCETH
+        to_instrument_name:
+          type: string
+          description: Instrument name to convert to, e.g. CDCETH or ETH.staked
+        expected_rate:
+          type: string
+          format: decimal
+          description: Expected conversion rate
+        from_quantity:
+          type: string
+          format: decimal
+          description: Quantity to be converted in from_instrument_name
+        slippage_tolerance_bps:
+          type: string
+          format: int32
+          description: Maximum slippage allowed in basis point
+        actual_rate:
+          type: string
+          format: decimal
+          description: Actual conversion rate
+        to_quantity:
+          type: string
+          format: decimal
+          description: Quantity converted to to_instrument_name
+        convert_id:
+          type: string
+          description: Convert request id
+        status:
+          $ref: "#/components/schemas/ConvertStatus"
+        create_timestamp_ms:
+          type: string
+          format: int64
+          description: Request creation timestamp in milliseconds in Unix time format.
+    ConvertStatus:
+      type: string
+      enum:
+        - NEW
+        - COMPLETED
+        - REJECTED
+      description: |
+        Status of a convert request (used wherever convert_id is present).
+        - ➖ NEW: Request created
+        - ➖ COMPLETED: Conversion completed
+        - ➖ REJECTED: Conversion rejected
+        - Possible values by operations:
+        - ➖ private/staking/get-open-convert: NEW
+        - ➖ private/staking/get-convert-history: COMPLETED, REJECTED
+```

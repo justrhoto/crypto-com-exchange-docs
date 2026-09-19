@@ -1,0 +1,14 @@
+{
+  "name": "crypto-com-exchange-docs",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Unofficial auto-updating Markdown mirror of the Crypto.com Exchange API documentation",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "update": "bun run update.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.2"
+  }
+}

@@ -1,0 +1,477 @@
+# private/get-trades
+
+URL: https://exchange-developer.crypto.com/exchange/v1/docs/api/rest/private-get-trades
+
+- **Method:** `POST`
+- **Path:** `/private/get-trades`
+- **Tags:** Trading, Transaction History
+
+Gets all executed trades for a particular instrument.
+
+Users should use `user.trade` to keep track of real-time trades, and `private/get-trades` should primarily be used for recovery; typically when the websocket is disconnected.
+
+## Request Body
+
+### Parameters
+
+- `end_time` (string (int64)) - End time in Unix time format (exclusive), ms or ns. Default: current system timestamp. Nanosecond recommended for accurate pagination.
+- `instrument_name` (string) - E.g. BTCUSD-PERP. Omit for 'all'.
+- `isolation_id` (string) - Optional filter for trades of a particular isolated position. Omit for 'all'.
+- `limit` (integer (int32)) - Maximum number of trades to retrieve before end_time. Default: 100. Max: 100.
+- `start_time` (string (int64)) - Start time in Unix time format (inclusive), ms or ns. Default: end_time - 1 day. Nanosecond recommended for accurate pagination.
+
+### Example
+
+```json
+{
+  "id": "1",
+  "method": "private/get-trades",
+  "api_key": "YOUR_API_KEY",
+  "sig": "DIGITAL_SIGNATURE",
+  "nonce": "1613570791060",
+  "params": {
+    "instrument_name": "BTCUSD-PERP",
+    "start_time": "1619089031996081486",
+    "end_time": "1619200052124211357",
+    "limit": 20
+  }
+}
+```
+
+## Responses
+
+### 200 Success.
+
+#### Result
+
+- `data` (array of object) - List of trades.
+
+#### Example
+
+```json
+{
+  "id": "1",
+  "method": "private/get-trades",
+  "code": "0",
+  "result": {
+    "data": [
+      {
+        "account_id": "52e7c00f-1324-5a6z-bfgt-de445bde21a5",
+        "event_date": "2021-02-17",
+        "journal_type": "TRADING",
+        "traded_quantity": "0.0500",
+        "traded_price": "51278.5",
+        "fees": "-1.025570",
+        "fee_credits": "-0.500000",
+        "order_id": "19708564",
+        "trade_id": "38554669",
+        "trade_match_id": "76423",
+        "client_oid": "7665b001-2753-4d17-b266-61ecb755922d",
+        "taker_side": "MAKER",
+        "side": "BUY",
+        "instrument_name": "BTCUSD-PERP",
+        "fee_instrument_name": "USD",
+        "create_time": "1613570791060",
+        "create_time_ns": "1613570791060827635",
+        "transact_time_ns": "1613570791060827635",
+        "match_count": "1",
+        "match_index": "0"
+      }
+    ]
+  }
+}
+```
+
+### 400 Bad request.
+
+#### Example
+
+```json
+{
+  "id": "1",
+  "method": "private/get-trades",
+  "code": "40001",
+  "message": "BAD_REQUEST"
+}
+```
+
+### 401 Unauthorized.
+
+#### Example
+
+```json
+{
+  "id": "1",
+  "method": "private/get-trades",
+  "code": "40101",
+  "message": "UNAUTHORIZED"
+}
+```
+
+### 408 Request timeout.
+
+#### Example
+
+```json
+{
+  "id": "1",
+  "method": "private/get-trades",
+  "code": "40801",
+  "message": "REQUEST_TIMEOUT"
+}
+```
+
+### 429 Too many requests.
+
+#### Example
+
+```json
+{
+  "id": "1",
+  "method": "private/get-trades",
+  "code": "42901",
+  "message": "TOO_MANY_REQUESTS"
+}
+```
+
+### 500 Internal server error.
+
+#### Example
+
+```json
+{
+  "id": "1",
+  "method": "private/get-trades",
+  "code": "50001",
+  "message": "INTERNAL_SERVER_ERROR"
+}
+```
+
+## OpenAPI Definition
+
+Self-contained OpenAPI specification for this operation:
+
+```yaml
+openapi: 3.0.3
+info:
+  title: private/get-trades
+  version: 1.0.0
+servers:
+  - url: https://api.crypto.com/exchange/v1
+    description: Production
+  - url: https://uat-api.3ona.co/exchange/v1
+    description: UAT Sandbox
+paths:
+  /private/get-trades:
+    post:
+      tags:
+        - Trading
+        - Transaction History
+      x-apply-to:
+        - rest
+      summary: private/get-trades
+      description: |
+        Gets all executed trades for a particular instrument.
+
+        Users should use `user.trade` to keep track of real-time trades, and `private/get-trades` should primarily be used for recovery; typically when the websocket is disconnected.
+      operationId: privateGetTrades
+      x-codeSamples: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PrivateGetTradesRequest"
+            example:
+              id: "1"
+              method: private/get-trades
+              api_key: YOUR_API_KEY
+              sig: DIGITAL_SIGNATURE
+              nonce: "1613570791060"
+              params:
+                instrument_name: BTCUSD-PERP
+                start_time: "1619089031996081486"
+                end_time: "1619200052124211357"
+                limit: 20
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetTradesResponse"
+              example:
+                id: "1"
+                method: private/get-trades
+                code: "0"
+                result:
+                  data:
+                    - account_id: 52e7c00f-1324-5a6z-bfgt-de445bde21a5
+                      event_date: "2021-02-17"
+                      journal_type: TRADING
+                      traded_quantity: "0.0500"
+                      traded_price: "51278.5"
+                      fees: "-1.025570"
+                      fee_credits: "-0.500000"
+                      order_id: "19708564"
+                      trade_id: "38554669"
+                      trade_match_id: "76423"
+                      client_oid: 7665b001-2753-4d17-b266-61ecb755922d
+                      taker_side: MAKER
+                      side: BUY
+                      instrument_name: BTCUSD-PERP
+                      fee_instrument_name: USD
+                      create_time: "1613570791060"
+                      create_time_ns: "1613570791060827635"
+                      transact_time_ns: "1613570791060827635"
+                      match_count: "1"
+                      match_index: "0"
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetTradesResponse"
+              example:
+                id: "1"
+                method: private/get-trades
+                code: "40001"
+                message: BAD_REQUEST
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetTradesResponse"
+              example:
+                id: "1"
+                method: private/get-trades
+                code: "40101"
+                message: UNAUTHORIZED
+        "408":
+          description: Request timeout.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetTradesResponse"
+              example:
+                id: "1"
+                method: private/get-trades
+                code: "40801"
+                message: REQUEST_TIMEOUT
+        "429":
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetTradesResponse"
+              example:
+                id: "1"
+                method: private/get-trades
+                code: "42901"
+                message: TOO_MANY_REQUESTS
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateGetTradesResponse"
+              example:
+                id: "1"
+                method: private/get-trades
+                code: "50001"
+                message: INTERNAL_SERVER_ERROR
+components:
+  schemas:
+    PrivateGetTradesRequest:
+      type: object
+      x-archetype: Request
+      required:
+        - id
+        - method
+        - api_key
+        - sig
+        - nonce
+        - params
+      description: Request body for private/get-trades.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Request id (echoed in response)
+        method:
+          type: string
+          description: Must be "private/get-trades"
+          example: private/get-trades
+        api_key:
+          type: string
+          description: Your API key (only required for private REST)
+        sig:
+          type: string
+          description: HMAC-SHA256 signature in hex (only required for private REST)
+        nonce:
+          type: string
+          format: int64
+          description: Current timestamp in milliseconds, e.g. "1771761038000".
+        params:
+          type: object
+          properties:
+            instrument_name:
+              type: string
+              example: BTCUSD-PERP
+              description: E.g. BTCUSD-PERP. Omit for 'all'.
+            start_time:
+              type: string
+              format: int64
+              description: "Start time in Unix time format (inclusive), ms or ns. Default: end_time - 1 day. Nanosecond recommended for accurate pagination."
+            end_time:
+              type: string
+              format: int64
+              description: "End time in Unix time format (exclusive), ms or ns. Default: current system timestamp. Nanosecond recommended for accurate pagination."
+            limit:
+              type: integer
+              format: int32
+              description: "Maximum number of trades to retrieve before end_time. Default: 100. Max: 100."
+            isolation_id:
+              type: string
+              description: Optional filter for trades of a particular isolated position. Omit for 'all'.
+    PrivateGetTradesResponse:
+      type: object
+      description: |
+        Response for private/get-trades (HTTP 200/4xx/5xx).
+        code === 0 → success, result present.
+        code !== 0 → error, message and/or original present.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Echoed request id
+        method:
+          type: string
+          description: Method invoked
+        code:
+          type: string
+          format: int32
+          description: 0 = success; non-zero indicates error (reason code).
+        result:
+          type: object
+          description: Present when code === 0. result.data[] per docs (account_id, traded_quantity, traded_price, fees, order_id, trade_id, etc.).
+          properties:
+            data:
+              type: array
+              description: List of trades.
+              items:
+                $ref: "#/components/schemas/TradeItem"
+        message:
+          type: string
+          description: Response message. Contains additional reason when code !== 0.
+        original:
+          type: string
+          description: Present when code !== 0.
+    TradeItem:
+      description: Trade item for REST private/get-trades result.data[]; extends core with transact_time_ns.
+      allOf:
+        - $ref: "#/components/schemas/TradeItemBase"
+        - type: object
+          properties:
+            transact_time_ns:
+              type: string
+              format: int64
+              description: Trade transaction time in nanoseconds.
+    TradeItemBase:
+      type: object
+      description: |
+        Common trade fields shared by WS user.trade and REST private/get-trades result.data[].
+        Transaction time is channel-specific: use WsTradeItem (transaction_time) or TradeItem (transact_time_ns).
+      properties:
+        account_id:
+          type: string
+          description: Account ID.
+        event_date:
+          type: string
+          description: Event date.
+        journal_type:
+          type: string
+          description: Journal type would be TRADING.
+        traded_quantity:
+          type: string
+          format: decimal
+          description: Trade quantity.
+        traded_price:
+          type: string
+          format: decimal
+          description: Trade price.
+        fees:
+          type: string
+          format: decimal
+          description: Net trade fees (after fee credits applied, if any). The negative sign means a deduction on balance.
+        fee_credits:
+          type: string
+          format: decimal
+          description: Fee credits used to offset the trade fees. The negative sign means fee credits were consumed.
+        order_id:
+          type: string
+          format: int64
+          description: Order ID.
+        trade_id:
+          type: string
+          format: int64
+          description: Trade ID.
+        trade_match_id:
+          type: string
+          format: int64
+          description: Trade match ID.
+        client_oid:
+          type: string
+          description: Client Order ID.
+        taker_side:
+          allOf:
+            - $ref: "#/components/schemas/TakerSide"
+            - description: MAKER or TAKER or empty.
+        side:
+          $ref: "#/components/schemas/OrderSide"
+        instrument_name:
+          type: string
+          description: E.g. BTCUSD-PERP.
+        fee_instrument_name:
+          type: string
+          description: E.g. USD.
+        create_time:
+          type: string
+          format: int64
+          description: Create timestamp in milliseconds.
+        create_time_ns:
+          type: string
+          format: int64
+          description: Create timestamp in nanoseconds.
+        match_count:
+          type: string
+          format: int32
+          description: Optional. Number of orders matched; Maker's order always 1; Taker's is the number of orders matched.
+        match_index:
+          type: string
+          format: int32
+          description: Optional. Only for Maker's order; which order entry of the price level was matched; 0-based.
+        isolation_id:
+          type: string
+          description: Isolation ID of the order if under isolated position.
+        isolation_type:
+          $ref: "#/components/schemas/IsolationType"
+    TakerSide:
+      type: string
+      enum:
+        - MAKER
+        - TAKER
+      description: Maker or taker side of the trade
+    OrderSide:
+      type: string
+      enum:
+        - BUY
+        - SELL
+      description: BUY or SELL
+    IsolationType:
+      type: string
+      enum:
+        - ISOLATED_MARGIN
+      description: Isolation type
+```

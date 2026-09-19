@@ -1,0 +1,429 @@
+# private/staking/get-open-stake
+
+URL: https://exchange-developer.crypto.com/exchange/v1/docs/api/rest/private-staking-get-open-stake
+
+- **Method:** `POST`
+- **Path:** `/private/staking/get-open-stake`
+- **Tags:** Staking
+
+Get stake/unstake requests that status is not in final state.
+
+## Request Body
+
+### Parameters
+
+- `end_time` (string (int64)) - End time in Unix format (inclusive), ms or ns. Default: current system timestamp.
+- `instrument_name` (string) - Staking instrument name, e.g. SOL.staked
+- `limit` (string (int32)) - Max number of requests returned. Default: 20. Max: 500.
+- `start_time` (string (int64)) - Start time in Unix format (inclusive), ms or ns. Default: end_time - 30 days. Min: end_time - 180 days.
+
+### Example
+
+```json
+{
+  "id": "1",
+  "method": "private/staking/get-open-stake",
+  "api_key": "YOUR_API_KEY",
+  "sig": "DIGITAL_SIGNATURE",
+  "nonce": "1739923200000",
+  "params": {
+    "instrument_name": "SOL.staked",
+    "start_time": "1691455454495",
+    "end_time": "1691545277000",
+    "limit": "10"
+  }
+}
+```
+
+## Responses
+
+### 200 Success.
+
+#### Result
+
+- `data` (array of object) - List of open stake entries.
+  Array of objects:
+  - `account` (string) - Account id
+  - `create_timestamp_ms` (string (int64)) - Request creation timestamp in milliseconds in Unix time format.
+  - `cycle_id` (string) - Cycle id
+  - `instrument_name` (string) - Staking instrument name, e.g. SOL.staked
+  - `quantity` (string (decimal)) - Stake/unstake quantity. For yield-bearing instruments, in terms of original staked token. E.g. when unstaking TSTON.staked, quantity is denominated in TON.
+  - `side` (enum: STAKE | UNSTAKE) - STAKE or UNSTAKE
+  - `staking_id` (string) - Request id
+  - `status` (enum: NEW | PENDING | PENDING_WITHDRAWAL | PENDING_UNSTAKING | STAKED | COMPLETED | REJECTED) - - Possible values
+  - `underlying_inst_name` (string) - Underlying instrument name, e.g. SOL
+
+#### Example
+
+```json
+{
+  "id": "1",
+  "method": "private/staking/get-open-stake",
+  "code": "0",
+  "result": {
+    "data": [
+      {
+        "instrument_name": "SOL.staked",
+        "underlying_inst_name": "SOL",
+        "cycle_id": "1",
+        "staking_id": "1",
+        "status": "PENDING",
+        "account": "12345678-9999-1234-9999-123456789999",
+        "quantity": "1",
+        "side": "STAKE",
+        "create_timestamp_ms": "1668658093600"
+      },
+      {
+        "instrument_name": "SOL.staked",
+        "underlying_inst_name": "SOL",
+        "cycle_id": "2",
+        "staking_id": "2",
+        "status": "UNSTAKING",
+        "account": "12345678-9999-1234-9999-123456789999",
+        "quantity": "0.5",
+        "side": "UNSTAKE",
+        "create_timestamp_ms": "1668658093600"
+      }
+    ]
+  }
+}
+```
+
+### 400 Bad request.
+
+#### Example
+
+```json
+{
+  "id": "1",
+  "method": "private/staking/get-open-stake",
+  "code": "40001",
+  "message": "BAD_REQUEST"
+}
+```
+
+### 401 Unauthorized.
+
+#### Example
+
+```json
+{
+  "id": "1",
+  "method": "private/staking/get-open-stake",
+  "code": "40101",
+  "message": "UNAUTHORIZED"
+}
+```
+
+### 408 Request timeout.
+
+#### Example
+
+```json
+{
+  "id": "1",
+  "method": "private/staking/get-open-stake",
+  "code": "40801",
+  "message": "REQUEST_TIMEOUT"
+}
+```
+
+### 429 Too many requests.
+
+#### Example
+
+```json
+{
+  "id": "1",
+  "method": "private/staking/get-open-stake",
+  "code": "42901",
+  "message": "TOO_MANY_REQUESTS"
+}
+```
+
+### 500 Internal server error.
+
+#### Example
+
+```json
+{
+  "id": "1",
+  "method": "private/staking/get-open-stake",
+  "code": "50001",
+  "message": "INTERNAL_SERVER_ERROR"
+}
+```
+
+## OpenAPI Definition
+
+Self-contained OpenAPI specification for this operation:
+
+```yaml
+openapi: 3.0.3
+info:
+  title: private/staking/get-open-stake
+  version: 1.0.0
+servers:
+  - url: https://api.crypto.com/exchange/v1
+    description: Production
+  - url: https://uat-api.3ona.co/exchange/v1
+    description: UAT Sandbox
+paths:
+  /private/staking/get-open-stake:
+    post:
+      tags:
+        - Staking
+      x-apply-to:
+        - rest
+      summary: private/staking/get-open-stake
+      description: Get stake/unstake requests that status is not in final state.
+      operationId: privateStakingGetOpenStake
+      x-codeSamples: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PrivateStakingGetOpenStakeRequest"
+            example:
+              id: "1"
+              method: private/staking/get-open-stake
+              api_key: YOUR_API_KEY
+              sig: DIGITAL_SIGNATURE
+              nonce: "1739923200000"
+              params:
+                instrument_name: SOL.staked
+                start_time: "1691455454495"
+                end_time: "1691545277000"
+                limit: "10"
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateStakingGetOpenStakeResponse"
+              example:
+                id: "1"
+                method: private/staking/get-open-stake
+                code: "0"
+                result:
+                  data:
+                    - instrument_name: SOL.staked
+                      underlying_inst_name: SOL
+                      cycle_id: "1"
+                      staking_id: "1"
+                      status: PENDING
+                      account: 12345678-9999-1234-9999-123456789999
+                      quantity: "1"
+                      side: STAKE
+                      create_timestamp_ms: "1668658093600"
+                    - instrument_name: SOL.staked
+                      underlying_inst_name: SOL
+                      cycle_id: "2"
+                      staking_id: "2"
+                      status: UNSTAKING
+                      account: 12345678-9999-1234-9999-123456789999
+                      quantity: "0.5"
+                      side: UNSTAKE
+                      create_timestamp_ms: "1668658093600"
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateStakingGetOpenStakeResponse"
+              example:
+                id: "1"
+                method: private/staking/get-open-stake
+                code: "40001"
+                message: BAD_REQUEST
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateStakingGetOpenStakeResponse"
+              example:
+                id: "1"
+                method: private/staking/get-open-stake
+                code: "40101"
+                message: UNAUTHORIZED
+        "408":
+          description: Request timeout.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateStakingGetOpenStakeResponse"
+              example:
+                id: "1"
+                method: private/staking/get-open-stake
+                code: "40801"
+                message: REQUEST_TIMEOUT
+        "429":
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateStakingGetOpenStakeResponse"
+              example:
+                id: "1"
+                method: private/staking/get-open-stake
+                code: "42901"
+                message: TOO_MANY_REQUESTS
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateStakingGetOpenStakeResponse"
+              example:
+                id: "1"
+                method: private/staking/get-open-stake
+                code: "50001"
+                message: INTERNAL_SERVER_ERROR
+components:
+  schemas:
+    PrivateStakingGetOpenStakeRequest:
+      type: object
+      x-archetype: Request
+      required:
+        - id
+        - method
+        - api_key
+        - sig
+        - nonce
+        - params
+      description: Request body for private/staking/get-open-stake.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Request id (echoed in response)
+        method:
+          type: string
+          description: Must be "private/staking/get-open-stake"
+          example: private/staking/get-open-stake
+        api_key:
+          type: string
+          description: Your API key (only required for private REST)
+        sig:
+          type: string
+          description: HMAC-SHA256 signature in hex (only required for private REST)
+        nonce:
+          type: string
+          format: int64
+          description: Current timestamp in milliseconds, e.g. "1771761038000".
+        params:
+          type: object
+          properties:
+            instrument_name:
+              type: string
+              description: Staking instrument name, e.g. SOL.staked
+            start_time:
+              type: string
+              format: int64
+              description: "Start time in Unix format (inclusive), ms or ns. Default: end_time - 30 days. Min: end_time - 180 days."
+            end_time:
+              type: string
+              format: int64
+              description: "End time in Unix format (inclusive), ms or ns. Default: current system timestamp."
+            limit:
+              type: string
+              format: int32
+              description: "Max number of requests returned. Default: 20. Max: 500."
+    PrivateStakingGetOpenStakeResponse:
+      type: object
+      description: |
+        Response for private/staking/get-open-stake (HTTP 200/4xx/5xx).
+        code === 0 → success, result present.
+        code !== 0 → error, message and/or original present.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Echoed request id
+        method:
+          type: string
+          description: Method invoked
+        code:
+          type: string
+          format: int32
+          description: 0 = success; non-zero indicates error (reason code).
+        result:
+          type: object
+          description: Present when code === 0. data array of open stake entries.
+          properties:
+            data:
+              type: array
+              description: List of open stake entries.
+              items:
+                $ref: "#/components/schemas/StakingOpenStakeItem"
+        message:
+          type: string
+          description: Response message. Contains additional reason when code !== 0.
+        original:
+          type: string
+          description: Present when code !== 0.
+    StakingOpenStakeItem:
+      type: object
+      description: One open stake entry in private/staking/get-open-stake result.data.
+      properties:
+        instrument_name:
+          type: string
+          description: Staking instrument name, e.g. SOL.staked
+        underlying_inst_name:
+          type: string
+          description: Underlying instrument name, e.g. SOL
+        cycle_id:
+          type: string
+          description: Cycle id
+        staking_id:
+          type: string
+          description: Request id
+        status:
+          $ref: "#/components/schemas/StakingStatus"
+        account:
+          type: string
+          description: Account id
+        quantity:
+          type: string
+          format: decimal
+          description: Stake/unstake quantity. For yield-bearing instruments, in terms of original staked token. E.g. when unstaking TSTON.staked, quantity is denominated in TON.
+        side:
+          $ref: "#/components/schemas/StakingSide"
+        create_timestamp_ms:
+          type: string
+          format: int64
+          description: Request creation timestamp in milliseconds in Unix time format.
+    StakingStatus:
+      type: string
+      enum:
+        - NEW
+        - PENDING
+        - PENDING_WITHDRAWAL
+        - PENDING_UNSTAKING
+        - STAKED
+        - COMPLETED
+        - REJECTED
+      description: |
+        - Possible values:
+        - ➖ NEW: Request created
+        - ➖ PENDING: In progress
+        - ➖ PENDING_WITHDRAWAL: Withdrawal pending
+        - ➖ PENDING_UNSTAKING: Unstaking pending
+        - ➖ STAKED: Staked
+        - ➖ COMPLETED: Completed
+        - ➖ REJECTED: Rejected
+        - Possible values by operations:
+        - ➖ private/staking/stake: NEW, PENDING, STAKED, COMPLETED, REJECTED
+        - ➖ private/staking/unstake: NEW, PENDING, PENDING_WITHDRAWAL, PENDING_UNSTAKING, STAKED, COMPLETED, REJECTED
+        - ➖ private/staking/get-open-stake: NEW, PENDING, PENDING_WITHDRAWAL, PENDING_UNSTAKING, STAKED
+        - ➖ private/staking/get-stake-history: COMPLETED, REJECTED
+    StakingSide:
+      type: string
+      enum:
+        - STAKE
+        - UNSTAKE
+      description: STAKE or UNSTAKE
+```

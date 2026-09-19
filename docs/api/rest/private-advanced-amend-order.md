@@ -1,0 +1,346 @@
+# private/advanced/amend-order
+
+URL: https://exchange-developer.crypto.com/exchange/v1/docs/api/rest/private-advanced-amend-order
+
+- **Method:** `POST`
+- **Path:** `/private/advanced/amend-order`
+- **Tags:** Advanced Order Management
+
+Amends an existing trigger order on the Exchange.
+
+This call is asynchronous, so the response is simply a confirmation of the request.
+
+The `user.advanced.order` subscription can be used to check when the order is successfully amended.
+
+**Trigger Order Type Conversion:**
+- Set `new_price` to "0" → Convert trigger limit order to trigger market order
+- Set `new_price` to "> 0" → Convert trigger market order to trigger limit order
+
+## Request Body
+
+### Parameters
+
+- `new_price` (string (decimal) **required**) - New limit price for the trigger order. Set to '0' to convert trigger limit to market, or value > 0 to convert market to limit.
+- `new_quantity` (string (decimal) **required**) - New quantity. If no change required, input original value.
+- `client_oid` (string) - Client Order ID to amend. Either order_id or client_oid must be present.
+- `new_ref_price` (string (decimal)) - New reference/trigger price. Omit to keep the existing trigger price.
+- `order_id` (string (int64)) - Order ID to amend. Either order_id or client_oid must be present. string format is highly recommended.
+
+### Example
+
+```json
+{
+  "method": "private/advanced/amend-order",
+  "id": "1",
+  "api_key": "YOUR_API_KEY",
+  "sig": "DIGITAL_SIGNATURE",
+  "nonce": "1610905028000",
+  "params": {
+    "order_id": "18342311",
+    "new_ref_price": "46000.0",
+    "new_quantity": "0.15"
+  }
+}
+```
+
+## Responses
+
+### 200 Success.
+
+#### Result
+
+- `client_oid` (string) - Client Order ID.
+- `order_id` (string (int64)) - Order ID.
+
+#### Example
+
+```json
+{
+  "id": "1",
+  "method": "private/advanced/amend-order",
+  "code": "0",
+  "result": {
+    "order_id": "18342311",
+    "client_oid": "c5f682ed-7108-4f1c-b755-972fcdca0f02"
+  }
+}
+```
+
+### 400 Bad request.
+
+#### Example
+
+```json
+{
+  "id": "1",
+  "method": "private/advanced/amend-order",
+  "code": "40001",
+  "message": "BAD_REQUEST"
+}
+```
+
+### 401 Unauthorized.
+
+#### Example
+
+```json
+{
+  "id": "1",
+  "method": "private/advanced/amend-order",
+  "code": "40101",
+  "message": "UNAUTHORIZED"
+}
+```
+
+### 408 Request timeout.
+
+#### Example
+
+```json
+{
+  "id": "1",
+  "method": "private/advanced/amend-order",
+  "code": "40801",
+  "message": "REQUEST_TIMEOUT"
+}
+```
+
+### 429 Too many requests.
+
+#### Example
+
+```json
+{
+  "id": "1",
+  "method": "private/advanced/amend-order",
+  "code": "42901",
+  "message": "TOO_MANY_REQUESTS"
+}
+```
+
+### 500 Internal server error.
+
+#### Example
+
+```json
+{
+  "id": "1",
+  "method": "private/advanced/amend-order",
+  "code": "50001",
+  "message": "INTERNAL_SERVER_ERROR"
+}
+```
+
+## OpenAPI Definition
+
+Self-contained OpenAPI specification for this operation:
+
+```yaml
+openapi: 3.0.3
+info:
+  title: private/advanced/amend-order
+  version: 1.0.0
+servers:
+  - url: https://api.crypto.com/exchange/v1
+    description: Production
+  - url: https://uat-api.3ona.co/exchange/v1
+    description: UAT Sandbox
+paths:
+  /private/advanced/amend-order:
+    post:
+      tags:
+        - Advanced Order Management
+      x-apply-to:
+        - rest
+        - ws-user-api
+      summary: private/advanced/amend-order
+      description: |
+        Amends an existing trigger order on the Exchange.
+
+        This call is asynchronous, so the response is simply a confirmation of the request.
+
+        The `user.advanced.order` subscription can be used to check when the order is successfully amended.
+
+        **Trigger Order Type Conversion:**
+        - Set `new_price` to "0" → Convert trigger limit order to trigger market order
+        - Set `new_price` to "> 0" → Convert trigger market order to trigger limit order
+      operationId: privateAdvancedAmendOrder
+      x-codeSamples: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PrivateAdvancedAmendOrderRequest"
+            example:
+              method: private/advanced/amend-order
+              id: "1"
+              api_key: YOUR_API_KEY
+              sig: DIGITAL_SIGNATURE
+              nonce: "1610905028000"
+              params:
+                order_id: "18342311"
+                new_ref_price: "46000.0"
+                new_quantity: "0.15"
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateAdvancedAmendOrderResponse"
+              example:
+                id: "1"
+                method: private/advanced/amend-order
+                code: "0"
+                result:
+                  order_id: "18342311"
+                  client_oid: c5f682ed-7108-4f1c-b755-972fcdca0f02
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateAdvancedAmendOrderResponse"
+              example:
+                id: "1"
+                method: private/advanced/amend-order
+                code: "40001"
+                message: BAD_REQUEST
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateAdvancedAmendOrderResponse"
+              example:
+                id: "1"
+                method: private/advanced/amend-order
+                code: "40101"
+                message: UNAUTHORIZED
+        "408":
+          description: Request timeout.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateAdvancedAmendOrderResponse"
+              example:
+                id: "1"
+                method: private/advanced/amend-order
+                code: "40801"
+                message: REQUEST_TIMEOUT
+        "429":
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateAdvancedAmendOrderResponse"
+              example:
+                id: "1"
+                method: private/advanced/amend-order
+                code: "42901"
+                message: TOO_MANY_REQUESTS
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateAdvancedAmendOrderResponse"
+              example:
+                id: "1"
+                method: private/advanced/amend-order
+                code: "50001"
+                message: INTERNAL_SERVER_ERROR
+components:
+  schemas:
+    PrivateAdvancedAmendOrderRequest:
+      type: object
+      x-archetype: Request
+      required:
+        - id
+        - method
+        - api_key
+        - sig
+        - nonce
+        - params
+      description: Request body for private/advanced/amend-order.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Request id (echoed in response)
+        method:
+          type: string
+          description: Must be "private/advanced/amend-order"
+          example: private/advanced/amend-order
+        api_key:
+          type: string
+          description: Your API key (only required for private REST)
+        sig:
+          type: string
+          description: HMAC-SHA256 signature in hex (only required for private REST)
+        nonce:
+          type: string
+          format: int64
+          description: Current timestamp in milliseconds, e.g. "1771761038000".
+        params:
+          type: object
+          required:
+            - new_quantity
+            - new_price
+          properties:
+            order_id:
+              type: string
+              format: int64
+              description: Order ID to amend. Either order_id or client_oid must be present. string format is highly recommended.
+            client_oid:
+              type: string
+              description: Client Order ID to amend. Either order_id or client_oid must be present.
+            new_ref_price:
+              type: string
+              format: decimal
+              description: New reference/trigger price. Omit to keep the existing trigger price.
+            new_quantity:
+              type: string
+              format: decimal
+              description: New quantity. If no change required, input original value.
+            new_price:
+              type: string
+              format: decimal
+              description: New limit price for the trigger order. Set to '0' to convert trigger limit to market, or value > 0 to convert market to limit.
+    PrivateAdvancedAmendOrderResponse:
+      type: object
+      description: |
+        Response for private/advanced/amend-order (HTTP 200/4xx/5xx).
+        code === 0 → success, result present.
+        code !== 0 → error, message and/or original present.
+      properties:
+        id:
+          type: string
+          format: int64
+          description: Echoed request id
+        method:
+          type: string
+          description: Method invoked
+        code:
+          type: string
+          format: int32
+          description: 0 = success; non-zero indicates error (reason code).
+        result:
+          type: object
+          description: Present when code === 0. Contains order_id and client_oid.
+          properties:
+            order_id:
+              type: string
+              format: int64
+              description: Order ID.
+            client_oid:
+              type: string
+              description: Client Order ID.
+        message:
+          type: string
+          description: Response message. Contains additional reason when code !== 0.
+        original:
+          type: string
+          description: Present when code !== 0.
+```
