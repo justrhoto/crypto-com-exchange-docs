@@ -167,6 +167,8 @@ paths:
         - Account Balance and Positions
       x-business-units:
         - exchange
+        - exchange-non-us
+        - exchange-non-us
       x-apply-to:
         - rest
       summary: private/get-fee-credit-balances

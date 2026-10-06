@@ -182,6 +182,7 @@ paths:
         - rest
       x-business-units:
         - exchange
+        - exchange-non-us
         - exchange-caas
         - dcm
         - dcm-margined

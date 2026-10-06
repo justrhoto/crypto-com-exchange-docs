@@ -143,6 +143,7 @@ paths:
         - Reference and Market Data
       x-business-units:
         - exchange
+        - exchange-non-us
         - exchange-caas
         - fcm
         - fcm-margined

@@ -161,6 +161,7 @@ paths:
         - rest
       x-business-units:
         - exchange
+        - exchange-non-us
         - dcm
         - dcm-margined
         - fcm-b2c

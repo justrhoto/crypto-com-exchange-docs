@@ -127,6 +127,7 @@ paths:
         - Reference and Market Data
       x-business-units:
         - exchange
+        - exchange-non-us
         - fcm
         - fcm-b2c
         - fcm-margined
