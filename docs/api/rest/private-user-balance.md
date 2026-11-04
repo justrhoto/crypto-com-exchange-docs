@@ -185,7 +185,9 @@ paths:
         - exchange-non-us
         - exchange-caas
         - dcm
+        - dcm-insto
         - dcm-margined
+        - dcm-margined-insto
         - fcm-b2c
         - fcm-b2c-margined
         - fcm

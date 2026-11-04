@@ -148,6 +148,7 @@ paths:
         - fcm-b2c-margined
         - fcm-non-us-margined
         - dcm-margined
+        - dcm-margined-insto
       x-deploy-envs-by-business-units:
         exchange:
           - local
@@ -166,21 +167,25 @@ paths:
           - develop
           - staging
           - pre
+          - master
         fcm-b2c-margined:
           - local
           - develop
           - staging
           - pre
+          - master
         fcm-non-us-margined:
           - local
           - develop
           - staging
           - pre
+          - master
         dcm-margined:
           - local
           - develop
           - staging
           - pre
+          - master
       x-apply-to:
         - rest
       summary: public/get-candlestick

@@ -138,6 +138,7 @@ paths:
         - fcm-non-us
         - fcm-non-us-margined
         - dcm-margined
+        - dcm-margined-insto
         - fcm-b2c
         - fcm-b2c-margined
       x-apply-to:

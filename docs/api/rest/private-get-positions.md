@@ -163,7 +163,9 @@ paths:
         - exchange
         - exchange-non-us
         - dcm
+        - dcm-insto
         - dcm-margined
+        - dcm-margined-insto
         - fcm-b2c
         - fcm-b2c-margined
         - fcm
