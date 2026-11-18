@@ -8,6 +8,8 @@ URL: https://exchange-developer.crypto.com/exchange/v1/docs/api/rest/private-fia
 
 Link a bank account via Plaid for a user. Links the user's bank account to their profile for withdrawals using a Plaid integration payload.
 
+A user may have a maximum of 5 bank accounts that are not `deleted` (all other statuses count toward the limit, including ones still `authenticated`). To link a new account when at the limit, an existing one must be unlinked (deleted) first.
+
 ## Request Body
 
 ### Parameters
@@ -80,17 +82,6 @@ Link a bank account via Plaid for a user. Links the user's bank account to their
 ```
 
 ### 400 Bad request.
-
-#### Example
-
-```json
-{
-  "id": "1",
-  "method": "private/fiat/fiat-create-bank-account",
-  "code": "40001",
-  "message": "BAD_REQUEST"
-}
-```
 
 ### 401 Unauthorized.
 
@@ -166,7 +157,10 @@ paths:
       x-apply-to:
         - rest
       summary: private/fiat/fiat-create-bank-account
-      description: Link a bank account via Plaid for a user. Links the user's bank account to their profile for withdrawals using a Plaid integration payload.
+      description: |
+        Link a bank account via Plaid for a user. Links the user's bank account to their profile for withdrawals using a Plaid integration payload.
+
+        A user may have a maximum of 5 bank accounts that are not `deleted` (all other statuses count toward the limit, including ones still `authenticated`). To link a new account when at the limit, an existing one must be unlinked (deleted) first.
       operationId: privateFiatFiatCreateBankAccount
       x-codeSamples: []
       requestBody:
@@ -214,11 +208,21 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PrivateFiatFiatCreateBankAccountResponse"
-              example:
-                id: "1"
-                method: private/fiat/fiat-create-bank-account
-                code: "40001"
-                message: BAD_REQUEST
+              examples:
+                bad_request:
+                  summary: Bad request
+                  value:
+                    id: "1"
+                    method: private/fiat/fiat-create-bank-account
+                    code: "40001"
+                    message: BAD_REQUEST
+                bank_account_limit_exceeded:
+                  summary: Bank account limit exceeded
+                  value:
+                    id: "1"
+                    method: private/fiat/fiat-create-bank-account
+                    code: "1000051"
+                    message: BANK_ACCOUNT_LIMIT_EXCEEDED_ERROR
         "401":
           description: Unauthorized.
           content:

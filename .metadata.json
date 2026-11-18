@@ -95,7 +95,7 @@
     "docs/api/rest/private-create-subaccount-transfer.md": "81992b3872fd35215227bbb1d8850caf9b20428a4ef667e95e326bc9dda576db",
     "docs/api/rest/private-create-withdrawal.md": "34722cd974aa0e561ad2bb1da1ca64c419c55e4e6d8a794e755791f6d0f2bcea",
     "docs/api/rest/private-fiat-fiat-access.md": "8c4f52041c3c97a5a103ff6f86a59b239953160725ffec1b0a9bd6442efff8e7",
-    "docs/api/rest/private-fiat-fiat-create-bank-account.md": "7b8a44cfb80a9f6eefd6e07bbb38df1ae957a9f91b9622f3860f9235629ced78",
+    "docs/api/rest/private-fiat-fiat-create-bank-account.md": "25c617ffac123fc55fe385cd0fcfc785883a32770a3046bf3c7afbe78c0b6d0a",
     "docs/api/rest/private-fiat-fiat-create-withdraw.md": "1861f01aca88c379b851df62a05c94cdb135774ceb4a8f6e695b272259403a0a",
     "docs/api/rest/private-fiat-fiat-deposit-history.md": "03ffa0b2acea917b149ab604527e0815d09a76fbc3f440dec075e55fc2ba9377",
     "docs/api/rest/private-fiat-fiat-deposit-info.md": "2ae92cb8b4f98fb8ea9bdca4978a2cdf35ae907754d00d4defe6e2e25c92e3aa",
